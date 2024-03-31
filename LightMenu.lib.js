@@ -240,17 +240,11 @@ let LightMenu = (function () {
          * @private
          */
         this.overlayOptions = options.overlayOptions ? {
-
             overlayContainer: options.overlayOptions.overlayContainer,
-
             color: options.overlayOptions.color,
-
             opacity: options.overlayOptions.opacity,
-
             zIndex: options.overlayOptions.zIndex,
-
             clickable: options.overlayOptions.clickable
-
         } : {};
 
         /**
@@ -290,17 +284,12 @@ let LightMenu = (function () {
      * @public
      */
     LightMenuLib.prototype.open = function (callback) {
-
         this.menuContainer.classList.add(this.menuActive);
-
         this.menuActiveState = 1;
 
         if (typeof callback === 'function') {
-
             callback();
-
         }
-
     }
 
     /**
@@ -309,17 +298,12 @@ let LightMenu = (function () {
      * @public
      */
     LightMenuLib.prototype.close = function (callback) {
-
         this.menuContainer.classList.remove(this.menuActive);
-
         this.menuActiveState = 0;
 
         if (typeof callback === 'function') {
-
             callback();
-
         }
-
     }
 
     /**
@@ -329,41 +313,29 @@ let LightMenu = (function () {
     LightMenuLib.prototype._initActiveState = function () {
 
         this.toggleBtn.addEventListener('click', function (e) {
-
             e.preventDefault();
 
             if (this.menuActiveState === 0) {
-
                 this.open(this.openCallback);
-
                 this._toggleOverlay();
-
                 this._toggleSubmenu();
-
                 this._closeOnClick(e);
 
                 return;
-
             }
 
             this.close(this.closeCallback);
-
             this._toggleOverlay();
 
         }.bind(this));
 
         if (this.closeBtn) {
-
             this.closeBtn.addEventListener('click', function () {
-
                 this.close(this.closeCallback);
-
                 this._toggleOverlay();
 
             }.bind(this));
-
         }
-
     }
 
     /**
@@ -371,39 +343,25 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype.createOverlay = function () {
-
         this.overlay = document.createElement('div');
-
         this.overlay.id = this.menuActive + 'Overlay';
-
         this.overlay.style.position = 'fixed';
-
         this.overlay.style.top = '0';
-
         this.overlay.style.left = '0';
-
         this.overlay.style.width = '100vw';
-
         this.overlay.style.height = '100vh';
-
         this.overlay.style.background = this.overlayOptions.color;
-
         this.overlay.style.opacity = this.overlayOptions.opacity;
-
         this.overlay.style.zIndex = this.overlayOptions.zIndex;
-
         this.overlay.style.pointerEvents = this.overlayOptions.clickable;
 
         if (this.overlayOptions.overlayContainer) {
-
             this.overlayOptions.overlayContainer.appendChild(this.overlay);
 
             return;
-
         }
 
         this.menuContainer.appendChild(this.overlay);
-
     }
 
     /**
@@ -411,9 +369,7 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype.deleteOverlay = function () {
-
         this.overlay.remove();
-
     }
 
     /**
@@ -423,21 +379,16 @@ let LightMenu = (function () {
     LightMenuLib.prototype._toggleOverlay = function () {
 
         if (!this.overlayOptions) {
-
             return;
-
         }
 
         if (this.menuActiveState === 0) {
-
             this.deleteOverlay();
 
             return;
-
         }
 
         this.createOverlay();
-
     }
 
     /**
@@ -448,33 +399,24 @@ let LightMenu = (function () {
     LightMenuLib.prototype._closeOnClick = function (e) {
 
         if (!this.closeOnClick) {
-
             return;
-
         }
 
         const closeOnClick = function (event) {
-
             const isClickInside = this.menu.contains(event.target);
 
             if (isClickInside) {
-
                 return;
-
             }
 
             document.removeEventListener('click', closeOnClick);
-
             this.close(this.closeCallback);
-
             this._toggleOverlay();
 
         }.bind(this);
 
         e.stopPropagation();
-
         document.addEventListener('click', closeOnClick);
-
     }
 
     /**
@@ -483,17 +425,12 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype._openSubmenu = function (submenu) {
-
         submenu.classList.add(this.submenuActive);
-
         this.submenuActiveState = 1;
 
         if (typeof this.submenuOpenCallback === 'function') {
-
             this.submenuOpenCallback();
-
         }
-
     }
 
     /**
@@ -502,17 +439,12 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype._closeSubmenu = function (submenu) {
-
         submenu.classList.remove(this.submenuActive);
-
         this.submenuActiveState = 0;
 
         if (typeof this.submenuCloseCallback === 'function') {
-
             this.submenuCloseCallback();
-
         }
-
     }
 
     /**
@@ -520,13 +452,9 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype._closeAllSubmenus = function () {
-
         this.submenus.forEach(function (submenu) {
-
             this._closeSubmenu(submenu);
-
         }.bind(this));
-
     }
 
     /**
@@ -536,9 +464,7 @@ let LightMenu = (function () {
      * @private
      */
     LightMenuLib.prototype._isSubmenuOpen = function (submenu) {
-
         return submenu.classList.contains(this.submenuActive);
-
     }
 
     /**
@@ -554,45 +480,33 @@ let LightMenu = (function () {
         this.submenus.forEach(function (submenu) {
 
             if (submenu.classList.contains(this.trailSelector)) {
-
                 this._openSubmenu(submenu);
-
             }
 
             submenu.addEventListener('click', function (e) {
 
                 if (this.submenuActiveState === 0) {
-
                     e.preventDefault();
-
                     this._openSubmenu(submenu);
 
                     return;
-
                 }
 
                 if (this._isSubmenuOpen(submenu)) {
-
                     e.stopPropagation();
 
                     return;
-
                 }
 
                 if (submenu.closest("." + this.submenuActive)) {
-
                     e.preventDefault();
-
                     this._openSubmenu(submenu);
 
                     return;
-
                 }
 
                 e.preventDefault();
-
                 this._closeAllSubmenus();
-
                 this._openSubmenu(submenu);
 
             }.bind(this));
@@ -601,5 +515,4 @@ let LightMenu = (function () {
     }
 
     return LightMenuLib;
-
 }());
